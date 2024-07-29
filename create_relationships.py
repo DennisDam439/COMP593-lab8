@@ -7,6 +7,10 @@ Usage:
  python create_relationships.py
 """
 import os
+from faker import Faker     
+from random import randint, choice
+import sqlite3
+
 
 
 # Determine the path of the database
@@ -15,7 +19,7 @@ db_path = os.path.join(script_dir, 'social_network.db')
 
 def main():
     create_relationships_table(db_path)
-    populate_relationships_table()
+    populate_relationships_table(db_path)
 
 def create_relationships_table(path):
     """Creates the relationships table in the DB"""
@@ -43,11 +47,50 @@ def create_relationships_table(path):
 
     return
 
-def populate_relationships_table():
+def populate_relationships_table(path):
     """Adds 100 random relationships to the DB"""
-    # TODO: Function body
-    # Hint: See example code in lab instructions entitled "Populate the Relationships Table"
-    return 
+    con = sqlite3.connect(path)
+    cur = con.cursor() 
+ 
+    # SQL query that inserts a row of data in the relationships table. 
+    add_relationship_query = """     
+        INSERT INTO relationships 
+        ( 
+            person1_id,         
+            person2_id,         
+            type,         
+            start_date 
+        ) 
+        VALUES (?, ?, ?, ?); 
+    """ 
+ 
+    fake = Faker() 
+ 
+    # Randomly select first person in relationship 
+    person1_id = randint(1, 200) 
+    
+    # Randomly select second person in relationship 
+    # Loop ensures person will not be in a relationship with themself 
+    person2_id = randint(1, 200) 
+    while person2_id == person1_id:    
+        person2_id = randint(1, 200) 
+    
+    # Randomly select a relationship type 
+    rel_type = choice(('friend', 'spouse', 'partner', 'relative'))  
+    
+    # Randomly select a relationship start date between now and 50 years ago 
+    start_date = fake.date_between(start_date='-50y', end_date='today')  
+    
+    # Create tuple of data for the new relationship 
+    new_relationship = (person1_id, person2_id, rel_type, start_date)  
+    
+    # Add the new relationship to the DB 
+    #  cur.execute(add_relationship_query, new_relationship) 
+    
+    con.commit() 
+    con.close() 
+
+
 
 if __name__ == '__main__':
    main()
