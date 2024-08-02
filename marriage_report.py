@@ -8,6 +8,7 @@ Usage:
 """
 import os
 import sqlite3
+import pandas
 from create_relationships import db_path, script_dir
 
 def main():
