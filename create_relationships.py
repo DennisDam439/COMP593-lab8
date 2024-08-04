@@ -11,8 +11,6 @@ from faker import Faker
 from random import randint, choice
 import sqlite3
 
-
-
 # Determine the path of the database
 script_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(script_dir, 'social_network.db')
@@ -89,8 +87,6 @@ def populate_relationships_table(path):
     
     con.commit() 
     con.close() 
-
-
 
 if __name__ == '__main__':
    main()
