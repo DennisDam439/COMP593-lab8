@@ -7,7 +7,7 @@ Usage:
  python create_relationships.py
 """
 import os
-     
+from faker import Faker     
 from random import randint, choice
 import sqlite3
 
