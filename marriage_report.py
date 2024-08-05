@@ -23,13 +23,14 @@ def get_married_couples():
     """Queries the Social Network database for all married couples.
 
     Returns:
-        list: (name1, name2, start_date) of married couples 
+        list: (person1, person2, start_date) of married couples 
     """
     # TODO: Function body
     # Hint: See example code in lab instructions entitled "Get a List of Relationships"
+    db_path = "C:\Users\dddam\OneDrive\Desktop\githubrepo\COMP593-lab8\social_network.db"
     con = sqlite3.connect(db_path)
     cur =con.cursor()
-    cur.execute("SELECT name1, name2, start_date FROM relationships WHERE type='married'")
+    cur.execute("SELECT  person1, person2, start_date FROM relationships WHERE type='married'")
     married_couples = cur.fetchall()
     con.close()
     return married_couples 
@@ -39,12 +40,12 @@ def save_married_couples_csv(married_couples, csv_path):
     names and their wedding anniversary date  
 
     Args:
-        married_couples (list): (name1, name2, start_date) of married couples
+        married_couples (list): (person1, person2, start_date) of married couples
         csv_path (str): Path of CSV file
     """
     # TODO: Function body
     # Hint: We did this in Lab 7.
-    df = pd.DataFrame(married_couples, columns= ['Name 1, Name 2', 'Wedding Anniversary'])
+    df = pd.DataFrame(married_couples, columns= ['Person 1', 'Person 2', 'Wedding Anniversary'])
     df.to_csv(csv_path, index= False)
 
 if __name__ == '__main__':
