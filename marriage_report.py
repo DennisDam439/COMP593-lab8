@@ -25,21 +25,21 @@ def get_married_couples():
     Returns:
         list: (name1, name2, start_date) of married couples 
     """
+    con = sqlite3.connect(db_path)
+    cursor = con.cursor()
+
     # TODO: Function body
     # Hint: See example code in lab instructions entitled "Get a List of Relationships"
 
-con = sqlite3.connect(db_path)
-cursor = con.cursor()
-
-
-all_relationships_query = """
-SELECT person1.name, person2.name, start_date, type FROM relationships
-JOIN people person1 ON person1_id = person1.id
-JOIN people person2 ON person2_id = person2.id;
-"""
-cursor.execute(all_relationships_query)
-married_couples = cursor.fetchall()
-con.close() 
+    married_couples_query = """
+    SELECT person1.name, person2.name, start_date, type FROM relationships
+    JOIN people person1 ON person1_id = person1.id
+    JOIN people person2 ON person2_id = person2.id;
+    """
+    cursor.execute(married_couples_query)
+    married_couples = cursor.fetchall()
+    con.close() 
+    return married_couples
 
 
 def save_married_couples_csv(married_couples, csv_path):
@@ -50,9 +50,6 @@ def save_married_couples_csv(married_couples, csv_path):
         married_couples (list): (name1, name2, start_date) of married couples
         csv_path (str): Path of CSV file
     """
-    con = sqlite3.connect(db_path)
-    cursor = con.cursor()
-
 
     # TODO: Function body
     # Hint: We did this in Lab 7.
@@ -61,3 +58,9 @@ def save_married_couples_csv(married_couples, csv_path):
 
 if __name__ == '__main__':
    main()
+
+
+
+
+
+
