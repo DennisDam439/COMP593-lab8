@@ -14,7 +14,7 @@ from create_relationships import db_path, script_dir
 def main():
     # Query DB for list of married couples
     married_couples = get_married_couples()
-
+    print(married_couples)
     # Save all married couples to CSV file
     csv_path = os.path.join(script_dir, 'married_couples.csv')
     save_married_couples_csv(married_couples, csv_path)
@@ -34,7 +34,8 @@ def get_married_couples():
     married_couples_query = """
     SELECT person1.name, person2.name, start_date, type FROM relationships
     JOIN people person1 ON person1_id = person1.id
-    JOIN people person2 ON person2_id = person2.id;
+    JOIN people person2 ON person2_id = person2.id
+    WHERE type = "spouse";
     """
     cursor.execute(married_couples_query)
     married_couples = cursor.fetchall()
@@ -53,7 +54,10 @@ def save_married_couples_csv(married_couples, csv_path):
 
     # TODO: Function body
     # Hint: We did this in Lab 7.
-    df = pd.DataFrame(married_couples, columns=['Name 1', 'Name 2', 'Wedding Anniversary'])
+    data = []
+    for name1, name2, anniversary, type in married_couples:
+        data.append({'Name1' : name1, 'name2' : name2, 'Anniversary' : anniversary})
+    df = pd.DataFrame(data)
     df.to_csv(csv_path, index=False)
 
 if __name__ == '__main__':
